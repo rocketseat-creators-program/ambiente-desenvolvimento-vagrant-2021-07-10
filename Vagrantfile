@@ -5,9 +5,12 @@
 # configures the configuration version (we support older styles for
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
+QTD_MAQUINAS=2
+BOX_PADRAO="ubuntu/focal64"
+
 Vagrant.configure("2") do |config|
 
-  config.vm.box = "ubuntu/focal64"
+  config.vm.box = BOX_PADRAO
 
   #config.vm.network "private_network", type: "dhcp"
 
@@ -36,13 +39,14 @@ Vagrant.configure("2") do |config|
 
   end
 
-  config.vm.define "app" do |vmapp|
+  (1..QTD_MAQUINAS).each do |n|
+  config.vm.define "app#{n}" do |vmapp|
 
-    vmapp.vm.box = "ubuntu/focal64" 
+    vmapp.vm.box = BOX_PADRAO
 
-    vmapp.vm.network "forwarded_port", guest: 80, host: 8080
+    vmapp.vm.network "forwarded_port", guest: 80, host: "808#{n}"
 
-    vmapp.vm.network "private_network", ip: "172.28.128.9"
+    vmapp.vm.network "private_network", ip: "172.28.128.9#{n}"
 
     vmapp.vm.network "public_network", bridge: "enp6s0"
 
@@ -53,10 +57,10 @@ Vagrant.configure("2") do |config|
       vb.gui = false
     
       # Customize the amount of memory on the VM:
-      vb.name = "VM_Application"
+      vb.name = "VM_Application#{n}"
       vb.memory = "1024"
       vb.cpus = 2
-      vb.customize ["modifyvm", :id, "--cpuexecutioncap", "100"]
+      vb.customize ["modifyvm", :id, "--cpuexecutioncap", "50"]
     end
 
 
@@ -69,5 +73,6 @@ Vagrant.configure("2") do |config|
 
   vmapp.vm.provision "shell", path: "install_nodejs.sh"
   end
+end
 
 end
