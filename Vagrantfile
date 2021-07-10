@@ -44,6 +44,8 @@ Vagrant.configure("2") do |config|
 
     vmapp.vm.network "private_network", ip: "172.28.128.9"
 
+    vmapp.vm.network "public_network", bridge: "enp6s0"
+
     vmapp.vm.synced_folder "dados", "/persistencia"
 
     vmapp.vm.provider "virtualbox" do |vb|
