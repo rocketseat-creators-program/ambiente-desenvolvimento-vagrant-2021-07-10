@@ -9,6 +9,30 @@ Vagrant.configure("2") do |config|
 
   config.vm.box = "ubuntu/focal64"
 
+
+  config.vm.define "bd" do |vmbd|
+
+    vmbd.vm.network "forwarded_port", guest: 5432, host: 5432  
+
+    vmbd.vm.synced_folder "dados", "/persistencia"
+
+    vmbd.vm.provider "virtualbox" do |vb|
+      # Display the VirtualBox GUI when booting the machine
+      vb.gui = false
+    
+      # Customize the amount of memory on the VM:
+      vb.name = "VM_Postgres"
+      vb.memory = "1024"
+      vb.cpus = 1
+    end 
+
+
+    vmbd.vm.provision "docker" do |docker|
+      docker.run "bitnami/postgresql:latest", args: "--name postgresql -p 5432:5432 -e POSTGRESQL_USERNAME=usr -e POSTGRESQL_PASSWORD=pass -e POSTGRESQL_DATABASE=db"
+    end
+
+  end
+
   config.vm.define "app" do |vmapp|
 
     vmapp.vm.box = "ubuntu/focal64" 
@@ -22,7 +46,7 @@ Vagrant.configure("2") do |config|
       vb.gui = false
     
       # Customize the amount of memory on the VM:
-      vb.name = "Application"
+      vb.name = "VM_Application"
       vb.memory = "1024"
       vb.cpus = 2
       vb.customize ["modifyvm", :id, "--cpuexecutioncap", "100"]
