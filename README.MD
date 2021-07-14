@@ -12,6 +12,6 @@ Nesse vídeo vamos utilizar o Vagrant, uma ferramenta da Hashicorp que vai nos a
 
 ## Expert
 
-| [<img src="https://avatars.githubusercontent.com/u/54695645?v=4" width="75px;"/>](https://github.com/diego3g) |
+| [<img src="https://avatars.githubusercontent.com/u/54695645?v=4" width="75px;"/>](https://github.com/busycore) |
 | :-: |
 |[Matheus Vargem](https://github.com/busycore)|
